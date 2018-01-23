@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Todo from './Todo';
+import style from './style';
 
 class TodoList extends Component {
   constructor(props) {
@@ -39,7 +40,7 @@ class TodoList extends Component {
 
   render() {
     return (
-      <div>
+      <div style={ style.list } >
         <ul>
           { this.state.todos.map( (todo, index) =>
             <Todo key={ index } description={ todo.description } completed={ todo.completed } deleteTodo={ () => this.deleteTodo(todo.description) } toggleComplete={ () => this.toggleComplete(index) } />
