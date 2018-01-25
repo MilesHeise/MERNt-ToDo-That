@@ -28,21 +28,31 @@ router.get('/', function(req, res) {
   res.json({message: 'API Initialized!'});
 });
 
-router.route('/todos').get(function(req, res) {
-  Todo.find(function(err, comments) {
-    if (err)
-      res.send(err);
-    res.json(comments)
-  });
-}).post(function(req, res) {
-  const todo = new Todo();
-  todo.description = req.body.description;
-  todo.completed = req.body.completed;
-  todo.save(function(err) {
-    if (err)
-      res.send(err);
-    res.json({message: 'Comment successfully added!'});
-  });
+router.route('/todos')
+  .get(function(req, res) {
+    Todo.find(function(err, todos) {
+      if (err)
+        res.send(err);
+      res.json(todos)
+    });
+  }).post(function(req, res) {
+    const todo = new Todo();
+    todo.description = req.body.description;
+    todo.completed = req.body.completed;
+    todo.save(function(err) {
+      if (err)
+        res.send(err);
+      res.json({message: 'Todo successfully added!'});
+    });
+});
+
+router.route('/todos/:todo_id')
+  .delete(function(req, res) {
+    Todo.remove({ _id: req.params.todo_id }, function(err, todo) {
+      if (err)
+        res.send(err);
+      res.json({message: 'Todo has been deleted'})
+    })
 });
 
 app.use('/api', router);

@@ -29,9 +29,9 @@ class TodoList extends Component {
     setInterval(this.loadTodosFromServer, 2000);
   }
 
-  toggleComplete(index) {
+  toggleComplete(id) {
     const todos = this.state.todos.slice();
-    const todo = todos[index];
+    const todo = todos.find(todo => todo._id === id);
     todo.completed = todo.completed ? false : true;
     this.setState({ todos: todos });
   }
@@ -64,12 +64,15 @@ class TodoList extends Component {
     // this works but it isn't ideal, I don't think?
   }
 
-   deleteTodo(description) {
-    const newTodos = this.state.todos.filter(todo => todo.description !== description);
-    // I should change the "key" from just map index to actual _id from mongodb
-    // then I should change this function to work off of key rather than description
-    // this way I can efficiently use the same argument in my axios request
-    // that I'll add to this function
+   deleteTodo(id) {
+    axios.delete(`http://localhost:3001/api/todos/${id}`)
+      .then(res => {
+        console.log('delete successful');
+      })
+      .catch(err => {
+        console.error(err);
+      });
+    const newTodos = this.state.todos.filter(todo => todo._id !== id);
     this.setState({ todos: [...newTodos] });
   }
 
@@ -78,7 +81,8 @@ class TodoList extends Component {
       <div style={ style.list } >
         <ul>
           { this.state.todos.map( (todo, index) =>
-            <Todo key={ index } description={ todo.description } completed={ todo.completed } deleteTodo={ () => this.deleteTodo(todo.description) } toggleComplete={ () => this.toggleComplete(index) } />
+            <Todo key={ index } description={ todo.description } completed={ todo.completed }
+            deleteTodo={ () => this.deleteTodo(todo._id) } toggleComplete={ () => this.toggleComplete(todo._id) } />
           )}
         </ul>
         <form onSubmit={ (e) => this.handleSubmit(e) }>
