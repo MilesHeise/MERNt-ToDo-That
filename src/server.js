@@ -47,7 +47,18 @@ router.route('/todos')
 });
 
 router.route('/todos/:todo_id')
-  .delete(function(req, res) {
+  .put(function(req, res) {
+    Todo.findById(req.params.todo_id, function(err, todo) {
+      if (err)
+        res.send(err);
+      todo.completed = req.body.completed;
+      todo.save(function(err) {
+        if (err)
+          res.send(err);
+        res.json({message: 'Todo has been updated!'});
+      });
+    });
+  }).delete(function(req, res) {
     Todo.remove({ _id: req.params.todo_id }, function(err, todo) {
       if (err)
         res.send(err);

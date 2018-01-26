@@ -33,6 +33,13 @@ class TodoList extends Component {
     const todos = this.state.todos.slice();
     const todo = todos.find(todo => todo._id === id);
     todo.completed = todo.completed ? false : true;
+    axios.put(`http://localhost:3001/api/todos/${id}`, todo)
+      .then(res => {
+        console.log('update successful');
+      })
+      .catch(err => {
+        console.error(err);
+      });
     this.setState({ todos: todos });
   }
 
