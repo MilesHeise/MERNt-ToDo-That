@@ -12,7 +12,7 @@ mongoose.connect('mongodb://testy:helloworld@ds211558.mlab.com:11558/merntodo');
 // if I wanted to could I make an ignored file to hold name and password,
 // and import it at top, then use it as variable inside mongo connect?
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded( { extended: true } ));
 app.use(bodyParser.json());
 
 app.use(function(req, res, next) {
@@ -25,7 +25,9 @@ app.use(function(req, res, next) {
 });
 
 router.get('/', function(req, res) {
-  res.json({message: 'API Initialized!'});
+  res.json({
+    message: 'API Initialized!'
+  });
 });
 
 router.route('/todos')
@@ -42,9 +44,11 @@ router.route('/todos')
     todo.save(function(err) {
       if (err)
         res.send(err);
-      res.json({message: 'Todo successfully added!'});
+      res.json({
+        message: 'Todo successfully added!'
+      });
     });
-});
+  });
 
 router.route('/todos/:todo_id')
   .put(function(req, res) {
@@ -55,16 +59,22 @@ router.route('/todos/:todo_id')
       todo.save(function(err) {
         if (err)
           res.send(err);
-        res.json({message: 'Todo has been updated!'});
+        res.json({
+          message: 'Todo has been updated!'
+        });
       });
     });
   }).delete(function(req, res) {
-    Todo.remove({ _id: req.params.todo_id }, function(err, todo) {
+    Todo.remove({
+      _id: req.params.todo_id
+    }, function(err, todo) {
       if (err)
         res.send(err);
-      res.json({message: 'Todo has been deleted'})
+      res.json({
+        message: 'Todo has been deleted'
+      })
     })
-});
+  });
 
 app.use('/api', router);
 

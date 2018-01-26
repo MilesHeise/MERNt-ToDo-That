@@ -7,7 +7,7 @@ class Todo extends Component {
       <div style={ style.todo } >
         <li>
            <input type="checkbox" checked={ this.props.completed } onChange={ this.props.toggleComplete } />
-           <span>{ this.props.description }</span>
+           <span style={ style.description } >{ this.props.description }</span>
            <button onClick={ this.props.deleteTodo } >Delete?</button>
         </li>
         </div>

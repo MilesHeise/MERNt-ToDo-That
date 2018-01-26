@@ -11,7 +11,6 @@ class TodoList extends Component {
       newTodoDescription: ''
     };
     this.loadTodosFromServer = this.loadTodosFromServer.bind(this);
-    // do I need this bind here?
   }
 
   loadTodosFromServer() {
@@ -35,12 +34,11 @@ class TodoList extends Component {
     todo.completed = todo.completed ? false : true;
     axios.put(`http://localhost:3001/api/todos/${id}`, todo)
       .then(res => {
-        console.log('update successful');
+        this.setState({ todos: todos });
       })
       .catch(err => {
         console.error(err);
       });
-    this.setState({ todos: todos });
   }
 
   handleChange(e) {
@@ -52,35 +50,23 @@ class TodoList extends Component {
     if (!this.state.newTodoDescription) { return }
     const newTodo = { description: this.state.newTodoDescription, completed: false };
     axios.post('http://localhost:3001/api/todos', newTodo)
-      // .then(res => {
-      //     this.setState({ newTodoDescription: '' });
-      //     this.loadTodosFromServer();
-      //     // when I did both in set state it gave me an error because it was unmounted
-      //     // but this workaround I tried really shouldn't actually assure it is mounted
-      //     // either. I think it is just wasting enough time on two requests that it mounts
-      //     // which is a dumb solution, I should fix this
-      // not 100% sure it was a mounting issue though, may have been some kind of a
-      // "this" issue? also got an error saying this.state.todos.map is not a function?
-      // })
+      .then(res => {
+        this.setState({ todos: [...this.state.todos, newTodo], newTodoDescription: '' });
+      })
       .catch(err => {
         console.error(err);
       })
-    this.setState({ todos: [...this.state.todos, newTodo], newTodoDescription: '' });
-    // so, doing it this way instead works. it does mean that a failed post will show
-    // up, and then disappear again almost instantly because of the 2 second updates
-    // this works but it isn't ideal, I don't think?
   }
 
    deleteTodo(id) {
     axios.delete(`http://localhost:3001/api/todos/${id}`)
       .then(res => {
-        console.log('delete successful');
+        const newTodos = this.state.todos.filter(todo => todo._id !== id);
+        this.setState({ todos: [...newTodos] });
       })
       .catch(err => {
         console.error(err);
       });
-    const newTodos = this.state.todos.filter(todo => todo._id !== id);
-    this.setState({ todos: [...newTodos] });
   }
 
   render() {
