@@ -76,6 +76,32 @@ router.route('/todos/:todo_id')
     })
   });
 
+router.route('/all')
+  .put(function(req, res) {
+    Todo.update({}, {
+      completed: req.body.completed
+    }, {
+      multi: true
+    }, function(err, todo) {
+      if (err)
+        res.send(err);
+      res.json({
+        message: 'Toggle successful'
+      })
+    })
+  })
+  .delete(function(req, res) {
+    Todo.remove({
+      completed: true
+    }, function(err, todo) {
+      if (err)
+        res.send(err);
+      res.json({
+        message: 'Completed todos removed'
+      })
+    })
+  });
+
 app.use('/api', router);
 
 app.listen(port, function() {

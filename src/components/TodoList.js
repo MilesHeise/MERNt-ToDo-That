@@ -69,9 +69,37 @@ class TodoList extends Component {
       });
   }
 
+  removeCompleted() {
+    axios.delete('http://localhost:3001/api/all')
+      .then(res => {
+        const newTodos = this.state.todos.filter(todo => !todo.completed);
+        this.setState({ todos: [...newTodos] });
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }
+
+  toggleAll() {
+    const allDone = this.state.todos.filter(todo => !todo.completed);
+    const boolean = allDone.length === 0
+    const newTodos = boolean ?
+      this.state.todos.map( todo => {todo.completed = false; return todo}) :
+      this.state.todos.map( todo => {todo.completed = true; return todo});
+    axios.put('http://localhost:3001/api/all', {completed: !boolean} )
+      .then(res => {
+        this.setState({ todos: [...newTodos] });
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }
+
   render() {
     return (
       <div style={ style.list } >
+        <button onClick={ () => this.removeCompleted() } >Remove all completed items?</button>
+        <button onClick={ () => this.toggleAll() } >Toggle all completed?</button>
         <ul>
           { this.state.todos.map( (todo, index) =>
             <Todo key={ index } description={ todo.description } completed={ todo.completed }
