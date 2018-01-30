@@ -10,7 +10,8 @@ class TodoList extends Component {
     super(props);
     this.state = {
       todos: [],
-      newTodoDescription: ''
+      newTodoDescription: '',
+      show: 'all'
     };
     this.loadTodosFromServer = this.loadTodosFromServer.bind(this);
   }
@@ -28,6 +29,12 @@ class TodoList extends Component {
   componentDidMount() {
     this.loadTodosFromServer();
     setInterval(this.loadTodosFromServer, 2000);
+  }
+
+  changeShow(e) {
+    console.log(this.state.show);
+    this.setState({ show: e.target.value });
+    console.log(this.state.show);
   }
 
   toggleComplete(id) {
@@ -103,11 +110,13 @@ class TodoList extends Component {
         <Controls
         removeCompleted={ () => this.removeCompleted() }
         toggleAll={ () => this.toggleAll() }
+        changeShow={ (e) => this.changeShow(e) }
         />
         <List
         todos={ this.state.todos }
         deleteTodo={ (id) => this.deleteTodo(id) }
         toggleComplete={ (id) => this.toggleComplete(id) }
+        show={ this.state.show }
         />
         <Form
         submit={ (e) => this.handleSubmit(e) }

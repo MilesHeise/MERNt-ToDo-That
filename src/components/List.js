@@ -11,10 +11,25 @@ class List extends Component {
     this.props.deleteTodo(id);
   }
 
+  selectView(view) {
+    let list = this.props.todos;
+    switch (view) {
+      case 'complete':
+        return list.filter(todo => todo.completed);
+      case 'incomplete':
+        return list.filter(todo => !todo.completed);
+      case 'all':
+      default:
+        return list;
+    }
+  }
+
   render() {
+    const todoList = this.selectView(this.props.show);
+
     return (
       <ul>
-        { this.props.todos.map( (todo, index) =>
+        { todoList.map( (todo, index) =>
           <Todo
           key={ index }
           description={ todo.description }
