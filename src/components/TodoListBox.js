@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import Todo from './Todo';
+import Controls from './Controls'
+import List from './List';
+import Form from './Form'
 import style from './style';
 
 class TodoList extends Component {
@@ -70,7 +72,7 @@ class TodoList extends Component {
   }
 
   removeCompleted() {
-    axios.delete('http://localhost:3001/api/all')
+    axios.delete('http://localhost:3001/api/remove-completed')
       .then(res => {
         const newTodos = this.state.todos.filter(todo => !todo.completed);
         this.setState({ todos: [...newTodos] });
@@ -86,7 +88,7 @@ class TodoList extends Component {
     const newTodos = boolean ?
       this.state.todos.map( todo => {todo.completed = false; return todo}) :
       this.state.todos.map( todo => {todo.completed = true; return todo});
-    axios.put('http://localhost:3001/api/all', {completed: !boolean} )
+    axios.put('http://localhost:3001/api/toggle-all', {completed: !boolean} )
       .then(res => {
         this.setState({ todos: [...newTodos] });
       })
@@ -98,18 +100,20 @@ class TodoList extends Component {
   render() {
     return (
       <div style={ style.list } >
-        <button onClick={ () => this.removeCompleted() } >Remove all completed items?</button>
-        <button onClick={ () => this.toggleAll() } >Toggle all completed?</button>
-        <ul>
-          { this.state.todos.map( (todo, index) =>
-            <Todo key={ index } description={ todo.description } completed={ todo.completed }
-            deleteTodo={ () => this.deleteTodo(todo._id) } toggleComplete={ () => this.toggleComplete(todo._id) } />
-          )}
-        </ul>
-        <form onSubmit={ (e) => this.handleSubmit(e) }>
-          <input type="text" value={ this.state.newTodoDescription } onChange={ (e) => this.handleChange(e) } />
-          <input type="submit" />
-        </form>
+        <Controls
+        removeCompleted={ () => this.removeCompleted() }
+        toggleAll={ () => this.toggleAll() }
+        />
+        <List
+        todos={ this.state.todos }
+        deleteTodo={ (id) => this.deleteTodo(id) }
+        toggleComplete={ (id) => this.toggleComplete(id) }
+        />
+        <Form
+        submit={ (e) => this.handleSubmit(e) }
+        value={ this.state.newTodoDescription }
+        change={ (e) => this.handleChange(e) }
+        />
       </div>
     );
   }

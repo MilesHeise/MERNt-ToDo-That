@@ -2,15 +2,15 @@ import React, { Component } from 'react';
 import style from './style';
 
 class Todo extends Component {
-  render() {
+render() {
     return (
       <div style={ style.todo } >
         <li>
-           <input type="checkbox" checked={ this.props.completed } onChange={ this.props.toggleComplete } />
+           <input type="checkbox" checked={ this.props.completed } onChange={ this.props.onToggle } />
            <span style={ style.description } >{ this.props.description }</span>
-           <button onClick={ this.props.deleteTodo } >Delete?</button>
+           <button onClick={ this.props.onDelete } >Delete?</button>
         </li>
-        </div>
+      </div>
     );
   }
 }

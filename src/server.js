@@ -67,7 +67,7 @@ router.route('/todos/:todo_id')
   }).delete(function(req, res) {
     Todo.remove({
       _id: req.params.todo_id
-    }, function(err, todo) {
+    }, function(err) {
       if (err)
         res.send(err);
       res.json({
@@ -76,24 +76,26 @@ router.route('/todos/:todo_id')
     })
   });
 
-router.route('/all')
+router.route('/toggle-all')
   .put(function(req, res) {
     Todo.update({}, {
       completed: req.body.completed
     }, {
       multi: true
-    }, function(err, todo) {
+    }, function(err) {
       if (err)
         res.send(err);
       res.json({
         message: 'Toggle successful'
       })
     })
-  })
+  });
+
+router.route('/remove-completed')
   .delete(function(req, res) {
     Todo.remove({
       completed: true
-    }, function(err, todo) {
+    }, function(err) {
       if (err)
         res.send(err);
       res.json({
