@@ -7,7 +7,7 @@ render() {
       <div style={ style.todo } >
         <li>
            <input type="checkbox" checked={ this.props.completed } onChange={ this.props.onToggle } />
-           <span style={ style.description } >{ this.props.description }</span>
+           <span style={ style.description } onClick={ this.props.editText } >{ this.props.description }</span>
            <button onClick={ this.props.onDelete } >Delete?</button>
         </li>
       </div>

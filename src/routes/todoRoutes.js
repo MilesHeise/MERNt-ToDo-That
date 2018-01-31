@@ -13,7 +13,7 @@ router.route('/remove-completed')
   .delete(TodoController.removeCompleted);
 
 router.route('/todos/:todo_id')
-  .put(TodoController.updateCompletion)
+  .put(TodoController.updateTodo)
   .delete(TodoController.deleteTodo);
 
 module.exports = router;

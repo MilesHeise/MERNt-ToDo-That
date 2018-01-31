@@ -59,12 +59,13 @@ exports.removeCompleted = function(req, res) {
   });
 }
 
-exports.updateCompletion = function(req, res) {
+exports.updateTodo = function(req, res) {
   Todo.findById(req.params.todo_id, function(err, todo) {
     if (err) {
       res.send(err);
     }
-    todo.completed = req.body.completed;
+    todo.completed = req.body.completed || todo.completed;
+    todo.description = req.body.description || todo.description;
     todo.save(function(err) {
       if (err) {
         res.send(err);

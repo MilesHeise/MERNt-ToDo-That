@@ -1,8 +1,39 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import Todo from './Todo';
+import Form from './Form';
 // import style from './style';
 
 class List extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      editing: null,
+      editedTodoDescription: ''
+    };
+  }
+
+  openEditField(id, desc) {
+    this.setState({ editing: id, editedTodoDescription: desc });
+  }
+
+  handleChange(e) {
+     this.setState({ editedTodoDescription: e.target.value })
+   }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    if (!this.state.editedTodoDescription) { return }
+    const editedTodo = { description: this.state.editedTodoDescription };
+    axios.put(`http://localhost:3001/api/todos/${this.state.editing}`, editedTodo)
+      .then(res => {
+        this.setState({ editing: null, editedTodoDescription: '' });
+      })
+      .catch(err => {
+        console.error(err);
+      })
+  }
+
   toggle(id) {
     this.props.toggleComplete(id);
   }
@@ -24,19 +55,33 @@ class List extends Component {
     }
   }
 
+  renderItemOrEdit(todo) {
+    if (this.state.editing === todo._id) {
+      return <Form
+        key={ todo._id }
+        submit={ (e) => this.handleSubmit(e) }
+        value={ this.state.editedTodoDescription }
+        change={ (e) => this.handleChange(e) }
+        />;
+    } else {
+      return <Todo
+        key={ todo._id }
+        description={ todo.description }
+        completed={ todo.completed }
+        onDelete={ (id) => this.delete(todo._id) }
+        onToggle={ (id) => this.toggle(todo._id) }
+        editText={ (id, desc) => this.openEditField(todo._id, todo.description) }
+        />;
+    }
+  }
+
   render() {
     const todoList = this.selectView(this.props.show);
 
     return (
       <ul>
-        { todoList.map( (todo, index) =>
-          <Todo
-          key={ index }
-          description={ todo.description }
-          completed={ todo.completed }
-          onDelete={ (id) => this.delete(todo._id) }
-          onToggle={ (id) => this.toggle(todo._id) }
-          />
+        { todoList.map( (todo) =>
+          this.renderItemOrEdit(todo)
         )}
       </ul>
     );

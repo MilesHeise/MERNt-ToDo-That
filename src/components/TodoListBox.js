@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import Controls from './Controls'
+import Controls from './Controls';
 import List from './List';
-import Form from './Form'
+import Form from './Form';
 import style from './style';
 
 class TodoList extends Component {
