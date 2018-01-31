@@ -1,12 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const Todo = require('./models/todos')
 
 const app = express();
-const router = express.Router();
 
 const port = process.env.API_PORT || 3001;
+
+const routes = require('./routes/todoRoutes');
 
 mongoose.connect('mongodb://testy:helloworld@ds211558.mlab.com:11558/merntodo');
 // if I wanted to could I make an ignored file to hold name and password,
@@ -24,88 +24,8 @@ app.use(function(req, res, next) {
   next();
 });
 
-router.get('/', function(req, res) {
-  res.json({
-    message: 'API Initialized!'
-  });
-});
+app.use('/api', routes);
 
-router.route('/todos')
-  .get(function(req, res) {
-    Todo.find(function(err, todos) {
-      if (err)
-        res.send(err);
-      res.json(todos)
-    });
-  }).post(function(req, res) {
-    const todo = new Todo();
-    todo.description = req.body.description;
-    todo.completed = req.body.completed;
-    todo.save(function(err) {
-      if (err)
-        res.send(err);
-      res.json({
-        message: 'Todo successfully added!'
-      });
-    });
-  });
-
-router.route('/todos/:todo_id')
-  .put(function(req, res) {
-    Todo.findById(req.params.todo_id, function(err, todo) {
-      if (err)
-        res.send(err);
-      todo.completed = req.body.completed;
-      todo.save(function(err) {
-        if (err)
-          res.send(err);
-        res.json({
-          message: 'Todo has been updated!'
-        });
-      });
-    });
-  }).delete(function(req, res) {
-    Todo.remove({
-      _id: req.params.todo_id
-    }, function(err) {
-      if (err)
-        res.send(err);
-      res.json({
-        message: 'Todo has been deleted'
-      })
-    })
-  });
-
-router.route('/toggle-all')
-  .put(function(req, res) {
-    Todo.update({}, {
-      completed: req.body.completed
-    }, {
-      multi: true
-    }, function(err) {
-      if (err)
-        res.send(err);
-      res.json({
-        message: 'Toggle successful'
-      })
-    })
-  });
-
-router.route('/remove-completed')
-  .delete(function(req, res) {
-    Todo.remove({
-      completed: true
-    }, function(err) {
-      if (err)
-        res.send(err);
-      res.json({
-        message: 'Completed todos removed'
-      })
-    })
-  });
-
-app.use('/api', router);
-
-app.listen(port, function() {
+app.listen(port, () => {
   console.log('api running on port ${port}');
 });

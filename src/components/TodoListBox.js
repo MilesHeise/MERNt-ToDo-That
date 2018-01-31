@@ -32,9 +32,7 @@ class TodoList extends Component {
   }
 
   changeShow(e) {
-    console.log(this.state.show);
     this.setState({ show: e.target.value });
-    console.log(this.state.show);
   }
 
   toggleComplete(id) {
