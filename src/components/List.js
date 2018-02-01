@@ -27,6 +27,7 @@ class List extends Component {
     const editedTodo = { description: this.state.editedTodoDescription };
     axios.put(`http://localhost:3001/api/todos/${this.state.editing}`, editedTodo)
       .then(res => {
+        this.props.passUpdate(this.state.editing, this.state.editedTodoDescription);
         this.setState({ editing: null, editedTodoDescription: '' });
       })
       .catch(err => {

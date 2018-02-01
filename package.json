@@ -1,7 +1,13 @@
 {
   "name": "mern-todo",
   "version": "0.1.0",
-  "private": true,
+  "description": "Todo List app for testing out front and back end MERN features",
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/MilesHeise/MERNt-ToDo-That"
+  },
+  "author" : "Miles Heise",
+  "license" : "ISC",
   "dependencies": {
     "axios": "^0.17.1",
     "body-parser": "^1.18.2",

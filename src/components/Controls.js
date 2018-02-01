@@ -7,8 +7,7 @@ render() {
       <div>
         <button onClick={ this.props.removeCompleted } >Remove all completed items?</button>
         <button onClick={ this.props.toggleAll } >Toggle all completed?</button>
-        <form id='views'>
-        </form>
+        <form id='views'><small>Which Todos Would You Like to View?</small></form>
         <select form='views' onChange={ this.props.changeShow } >
           <option value='all'>All</option>
           <option value='complete'>Only Completed</option>

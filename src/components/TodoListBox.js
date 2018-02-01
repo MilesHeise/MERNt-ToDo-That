@@ -39,7 +39,7 @@ class TodoList extends Component {
     const todos = this.state.todos.slice();
     const todo = todos.find(todo => todo._id === id);
     todo.completed = todo.completed ? false : true;
-    axios.put(`http://localhost:3001/api/todos/${id}`, todo)
+    axios.put(`http://localhost:3001/api/todos/${id}`, {completed: todo.completed} )
       .then(res => {
         this.setState({ todos: todos });
       })
@@ -87,6 +87,13 @@ class TodoList extends Component {
       });
   }
 
+  passUpdate(id, desc) {
+    const todos = this.state.todos.slice();
+    const todo = todos.find(todo => todo._id === id);
+    todo.description = desc;
+    this.setState({ todos: todos });
+  }
+
   toggleAll() {
     const allDone = this.state.todos.filter(todo => !todo.completed);
     const boolean = allDone.length === 0
@@ -115,6 +122,7 @@ class TodoList extends Component {
         deleteTodo={ (id) => this.deleteTodo(id) }
         toggleComplete={ (id) => this.toggleComplete(id) }
         show={ this.state.show }
+        passUpdate={ (id, desc) => this.passUpdate(id, desc) }
         />
         <Form
         submit={ (e) => this.handleSubmit(e) }

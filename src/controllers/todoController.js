@@ -1,29 +1,28 @@
 const Todo = require('../models/todos')
 
 exports.test = function(req, res) {
-  console.log('fired');
   res.json({
     message: 'API Initialized!'
   });
 }
 
-exports.getTodos = function(req, res) {
+exports.getTodos = function(req, res, next) {
   Todo.find(function(err, todos) {
     if (err) {
-      res.send(err);
+      return next(err);
     }
     res.json(todos)
   });
 }
 
 
-exports.addTodo = function(req, res) {
+exports.addTodo = function(req, res, next) {
   const todo = new Todo();
   todo.description = req.body.description;
   todo.completed = req.body.completed;
   todo.save(function(err) {
     if (err) {
-      res.send(err);
+      return next(err);
     }
     res.json({
       message: 'Todo successfully added!'
@@ -31,14 +30,14 @@ exports.addTodo = function(req, res) {
   });
 }
 
-exports.toggleAll = function(req, res) {
+exports.toggleAll = function(req, res, next) {
   Todo.update({}, {
     completed: req.body.completed
   }, {
     multi: true
   }, function(err) {
     if (err) {
-      res.send(err);
+      return next(err);
     }
     res.json({
       message: 'Toggle successful'
@@ -46,12 +45,12 @@ exports.toggleAll = function(req, res) {
   });
 }
 
-exports.removeCompleted = function(req, res) {
+exports.removeCompleted = function(req, res, next) {
   Todo.remove({
     completed: true
   }, function(err) {
     if (err) {
-      res.send(err);
+      return next(err);
     }
     res.json({
       message: 'Completed todos removed'
@@ -59,16 +58,20 @@ exports.removeCompleted = function(req, res) {
   });
 }
 
-exports.updateTodo = function(req, res) {
+exports.updateTodo = function(req, res, next) {
   Todo.findById(req.params.todo_id, function(err, todo) {
     if (err) {
-      res.send(err);
+      return next(err);
     }
-    todo.completed = req.body.completed || todo.completed;
-    todo.description = req.body.description || todo.description;
+    if (req.body.completed !== undefined) {
+      todo.completed = req.body.completed;
+    }
+    if (req.body.description !== undefined) {
+      todo.description = req.body.description;
+    }
     todo.save(function(err) {
       if (err) {
-        res.send(err);
+        return next(err);
       }
       res.json({
         message: 'Todo has been updated!'
@@ -77,13 +80,12 @@ exports.updateTodo = function(req, res) {
   });
 }
 
-
-exports.deleteTodo = function(req, res) {
+exports.deleteTodo = function(req, res, next) {
   Todo.remove({
     _id: req.params.todo_id
   }, function(err) {
     if (err) {
-      res.send(err);
+      return next(err);
     }
     res.json({
       message: 'Todo has been deleted'

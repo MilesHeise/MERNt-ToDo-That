@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const TodoController = require('../controllers/todoController');
 
+router.get('/', TodoController.test);
+
 router.route('/todos')
   .get(TodoController.getTodos)
   .post(TodoController.addTodo);
