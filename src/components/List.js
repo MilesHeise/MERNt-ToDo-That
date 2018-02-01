@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Todo from './Todo';
 import Form from './Form';
-// import style from './style';
 
 class List extends Component {
   constructor(props) {
@@ -63,6 +62,7 @@ class List extends Component {
         submit={ (e) => this.handleSubmit(e) }
         value={ this.state.editedTodoDescription }
         change={ (e) => this.handleChange(e) }
+        type='Edit?'
         />;
     } else {
       return <Todo

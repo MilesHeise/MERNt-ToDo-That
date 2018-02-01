@@ -11,18 +11,18 @@ class App extends Component {
       <div>
         <header>
         <ul style={ style.navbar } >
-          <li><Link to='/'>Home</Link></li>
-          <li><Link to='/about'>About</Link></li>
-          <li><Link to='/todolist'>To Do List!</Link></li>
+          <li><Link to='/' style={ style.navs } >Home</Link></li>
+          <li><Link to='/about' style={ style.navs } >About</Link></li>
+          <li><Link to='/todolist' style={ style.navs } >To Do List!</Link></li>
         </ul>
-        <h1 style={ style.header } >Ultimate ToDo List</h1>
+        <h1 style={ style.header } >Ultimate ToDo List OMG</h1>
         </header>
         <main style={ style.content } >
           <Route exact path="/" component={Landing}/>
           <Route path="/about" component={About}/>
           <Route path="/todolist" component={TodoListBox}/>
         </main>
-      < /div>
+      </div>
     );
   }
 }

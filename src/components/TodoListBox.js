@@ -128,6 +128,7 @@ class TodoList extends Component {
         submit={ (e) => this.handleSubmit(e) }
         value={ this.state.newTodoDescription }
         change={ (e) => this.handleChange(e) }
+        type='Add New?'
         />
       </div>
     );

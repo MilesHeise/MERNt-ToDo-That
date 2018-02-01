@@ -1,23 +1,33 @@
 const style = {
   navbar: {
-    fontSize: '1.5rem',
-    fontFamily: '"Times New Roman", Times, serif',
-    margin: '0',
-    padding: '0',
+    fontSize: '2rem',
+    fontFamily: 'Futura, sans-serif',
+    textAlign: 'center',
     width: '15%',
-    backgroundColor: '#f1f1f1',
-    height: '100vh',
+    padding: '0',
+    backgroundColor: 'lightcyan',
+    listStyle: 'none',
+    height: '80vh',
     position: 'fixed',
     overflow: 'auto',
-    border: '1px solid #555'
+    border: '2px solid darkslateblue'
+  },
+  navs: {
+    marginTop: '1rem',
+    color: 'darkslateblue',
+    display: 'block',
+    textDecoration:'none'
   },
   header: {
     textAlign: 'center',
-    fontSize: '3rem'
+    fontFamily: 'Futura, sans-serif',
+    fontSize: '4rem',
+    color: 'deepskyblue'
   },
   content: {
     float: 'right',
-    width: '80%'
+    width: '80%',
+    height: '80vh',
   }
 }
 
