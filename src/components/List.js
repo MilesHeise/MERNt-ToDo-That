@@ -10,6 +10,7 @@ class List extends Component {
       editing: null,
       editedTodoDescription: ''
     };
+    this.handleBlur = this.handleBlur.bind(this);
   }
 
   openEditField(id, desc) {
@@ -55,9 +56,9 @@ class List extends Component {
     }
   }
 
-  // handleBlur() {
-  //   this.setState({ editing: null} );
-  // }
+  handleBlur(e) {
+    this.setState({ editing: null} );
+  }
 
   renderItemOrEdit(todo) {
     if (this.state.editing === todo._id) {
@@ -67,7 +68,6 @@ class List extends Component {
         value={ this.state.editedTodoDescription }
         change={ (e) => this.handleChange(e) }
         type='Edit'
-        // blur={ () => this.handleBlur() }
         />;
     } else {
       return <Todo
@@ -85,7 +85,7 @@ class List extends Component {
     const todoList = this.selectView(this.props.show);
 
     return (
-      <ul>
+      <ul onMouseLeave={ this.handleBlur } >
         { todoList.map( (todo) =>
           this.renderItemOrEdit(todo)
         )}
