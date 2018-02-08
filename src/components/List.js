@@ -55,6 +55,10 @@ class List extends Component {
     }
   }
 
+  // handleBlur() {
+  //   this.setState({ editing: null} );
+  // }
+
   renderItemOrEdit(todo) {
     if (this.state.editing === todo._id) {
       return <Form
@@ -62,7 +66,8 @@ class List extends Component {
         submit={ (e) => this.handleSubmit(e) }
         value={ this.state.editedTodoDescription }
         change={ (e) => this.handleChange(e) }
-        type='Edit?'
+        type='Edit'
+        // blur={ () => this.handleBlur() }
         />;
     } else {
       return <Todo

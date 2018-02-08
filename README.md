@@ -17,3 +17,5 @@ You can use `npm run startBoth` to spin up the front and back ends simultaneousl
 Use `npm run startDB` if you only want the back end to run. With this you can use Postman to check things like error handling with bad data (for instance send a GET to /todos/ and pull one of the todo id values, then send a PUT request to /todos/:id where you try to change the boolean value of "completed" to a nonsense string).
 
 Using `npm start` will open just the front end but there won't be any major functionality and there is not much reason to do this.
+
+_Of note:_ The CORS is set to allow requests from localhost:3000, which is where the front end will open by default. If you have anything on your system interfering with this default, you can just change `Access-Control-Allow-Origin` in `server.js` to a `*` wildcard, since security won't be an issue on a test-drive.
